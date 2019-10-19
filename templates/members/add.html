@@ -1,0 +1,233 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block internal_style %}
+
+    <style>
+        .container {
+            max-width: 960px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 20px;
+            text-align: center;
+            margin: 20px 0 20px;
+        }
+        h1 small {
+            display: block;
+            font-size: 15px;
+            padding-top: 8px;
+            color: gray;
+        }
+
+        .avatar-upload {
+            position: relative;
+            max-width: 205px;
+            margin: 30px auto;
+        }
+        .avatar-upload .avatar-edit {
+            position: absolute;
+            right: 12px;
+            z-index: 1;
+            top: 10px;
+        }
+        .avatar-upload .avatar-edit input {
+            display: none;
+        }
+        .avatar-upload .avatar-edit input + label {
+            display: inline-block;
+            width: 34px;
+            height: 34px;
+            margin-bottom: 0;
+            border-radius: 100%;
+            background: #FFFFFF;
+            border: 1px solid transparent;
+            box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+            cursor: pointer;
+            font-weight: normal;
+            transition: all .2s ease-in-out;
+        }
+        .avatar-upload .avatar-edit input + label:hover {
+            background: #f1f1f1;
+            border-color: #d6d6d6;
+        }
+        .avatar-upload .avatar-edit input + label:after {
+            content: "\f040";
+            font-family: 'FontAwesome';
+            color: #757575;
+            position: absolute;
+            top: 7px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            margin: auto;
+        }
+        .avatar-upload .avatar-preview {
+            width: 192px;
+            height: 192px;
+            position: relative;
+            border-radius: 100%;
+            border: 6px solid #F8F8F8;
+            box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+        }
+        .avatar-upload .avatar-preview > div {
+            width: 100%;
+            height: 100%;
+            border-radius: 100%;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+    </style>
+
+{% endblock internal_style %}
+
+{% block script %}
+    <script>
+        function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            $('#imagePreview').css('background-image', 'url('+e.target.result +')');
+            $('#imagePreview').hide();
+            $('#imagePreview').fadeIn(650);
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+$("#{{ form.picture.id_for_label }}").change(function() {
+    readURL(this);
+});
+    </script>
+
+{% endblock script %}
+
+
+{% block content %}
+    <div class="dashboard-wrapper">
+        <div class="container-fluid dashboard-content">
+            <div class="row">
+                <div class="col-xs-12 col-lg-11 col-md-11 col-sm-12 col-xl-7 mx-auto">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="col-lg-12 mr-auto ml-auto alert bg-warning alert-dismissable pb-0 pt-0" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true" class="text-danger"><b>&times;</b></span>
+                                </button>
+                                <div class="row">
+                                    <div class="mr-auto ml-auto">
+                                    <p class="h5 mr-auto ml-auto p-2 text-light">
+                                         <b>
+                                            {% if message.tags ==  "alert-danger" %}
+                                                <i class="fa fa-exclamation-triangle mr-3 text-danger"></i> {{ message }}
+                                            {% else %}
+                                                <i class="fa fa-check"></i> {{ message }}
+                                            {% endif %}
+                                        </b>
+                                    </p>
+                                </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    <div class="card">
+                        <h5 class="card-header"><p class="h5">Add A New Member </p></h5>
+                        <div class="card-body">
+                            <form enctype="multipart/form-data" action="{% url 'create_member' %}" method="post" class="mb-5">
+                                {% csrf_token %}
+                                <div class="container">
+                                    <h1>Upload Your Image
+                                        <small>and preview</small>
+                                    </h1>
+                                    <div class="avatar-upload">
+                                        <div class="avatar-edit">
+                                            <input type='file' id="{{ form.picture.id_for_label }}" name="{{ form.picture.name }}" accept="image/*" class="input" />
+                                            <label for="{{ form.picture.id_for_label }}"></label>
+                                        </div>
+                                        <div class="avatar-preview">
+                                            <div id="imagePreview" style="background-image: url({% static 'assets/images/avatar01.png' %}); background-size: 120%;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row mb-3">
+                                    <div class="col">
+                                        <label for="{{ form.name.id_for_label }}">Member Name</label>
+                                        <input type="text" class="form-control" id="{{ form.name.id_for_label }}" name="{{ form.name.name }}" autofocus required>
+                                    </div>
+                                    <div class="col">
+                                        <label for="{{ form.telephone.id_for_label }}">Phone Number</label>
+                                        <input type="text" name="{{ form.telephone.name }}" id="{{ form.telephone.id_for_label }}" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="{{ form.shepherd.id_for_label }}">Shepherd</label>
+                                    <select name="{{ form.shepherd.name }}" id="{{ form.shepherd.id_for_label }}" class="form-control">
+                                        <option value="">----------- Select The Shepherd --------------</option>
+                                        {% for shepherd in shepherds %}
+                                            <option value="{{ shepherd.pk }}">{{ shepherd.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="{{ form.ministry.id_for_label }}">Ministry</label>
+                                    <select name="{{ form.ministry.name }}" id="{{ form.ministry.id_for_label }}" class="form-control">
+                                        <option value="">------------- Select The Ministry</option>
+                                        {% for ministry in ministries %}
+                                            <option value="{{ ministry.pk }}">{{ ministry.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-row">
+                                    <div class="col">
+                                        <label for="{{ form.location.id_for_label }}">Location</label>
+                                        <input type="text" name="{{ form.location.name }}" id="{{ form.location.id_for_label }}" class="form-control">
+                                    </div>
+                                    <div class="col">
+                                        <label for="{{ form.guardians_name.id_for_label }}">Guardian's Name</label>
+                                        <input type="text" id="{{ form.guardians_name.id_for_label }}" class="form-control" name="{{ form.guardians_name.name }}">
+                                    </div>
+                                </div>
+                                <div class="form-row mt-3">
+                                    <div class="col">
+                                        <label for="{{ form.fathers_name.id_for_label }}">Father's Name</label>
+                                        <input type="text" id="{{ form.fathers_name.id_for_label }}" class="form-control" name="{{ form.fathers_name.name }}">
+                                    </div>
+                                    <div class="col">
+                                        <label for="{{ form.mothers_name.id_for_label }}">Mother's Name</label>
+                                        <input type="text" id="{{ form.mothers_name.id_for_label }}" class="form-control" name="{{ form.mothers_name.name }}">
+                                    </div>
+                                </div>
+                                <br>
+                                <hr>
+                                <div class="form-group mt-3">
+                                    <label class="custom-control custom-checkbox custom-control-inline">
+                                        <input type="checkbox" class="custom-control-input" id="{{ form.new_believer_school.id_for_label }}" name="{{ form.new_believer_school.name }}">
+                                        <span class="custom-control-label mr-3">New Believer's School</span>
+                                    </label>
+                                    <label class="custom-control custom-checkbox custom-control-inline">
+                                        <input type="checkbox" class="custom-control-input" id="{{ form.pays_tithe.id_for_label }}" name="{{ form.pays_tithe.name }}">
+                                        <span class="custom-control-label mr-5">Pay's Tithe</span>
+                                    </label>
+                                    <label class="custom-control custom-checkbox custom-control-inline">
+                                        <input type="checkbox" class="custom-control-input" id="{{ form.working.id_for_label }}" name="{{ form.working.name }}">
+                                        <span class="custom-control-label mr-5">Working</span>
+                                    </label>
+                                    <label class="custom-control custom-checkbox custom-control-inline">
+                                        <input type="checkbox" class="custom-control-input" id="{{ form.schooling.id_for_label }}" name="{{ form.schooling.name }}">
+                                        <span class="custom-control-label">Schooling</span>
+                                    </label>
+                                </div>
+                                <hr>
+
+                                <button type="submit" class="btn btn-warning mt-5 text-light btn-sm shadow">Add Member</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+{% endblock content %}

@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <div class="dashboard-wrapper">
+        <div class="container-fluid dashboard-content">
+
+            <div class="container">
+                <div class="row">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="col-lg-12 mr-auto ml-auto alert bg-warning alert-dismissable pb-0 pt-0" role="alert">
+                            <button type="button" class="close p-2" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true" class="text-danger text-light"><b>&times;</b></span>
+                            </button>
+                            <div class="row">
+                                <div class="mr-auto ml-auto">
+                                <p class="h5 mr-auto ml-auto p-2 text-light">
+                                     <b>
+                                        {% if message.tags ==  "alert-danger" %}
+                                            <i class="fa fa-exclamation-triangle mr-3 text-danger"></i> {{ message }}
+                                        {% else %}
+                                            <i class="fa fa-check"></i> {{ message }}
+                                        {% endif %}
+                                    </b>
+                                </p>
+                            </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 pr-xl-0 pr-lg-0 pr-md-0  m-b-30">
+                        <div class="product-slider">
+                            <div id="productslider-1" class="product-carousel carousel slide" data-ride="carousel">
+                                <ol class="carousel-indicators">
+                                    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                                    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                                    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                                </ol>
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active">
+                                        <img class="d-block" src="{{ member.picture.url }}" alt="First slide" height="310px">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img class="d-block" src="{{ member.picture.url }}" alt="Second slide" height="310px">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img class="d-block" src="{{ member.picture.url }}" alt="Third slide" height="310px">
+                                    </div>
+                                </div>
+                                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                 <span class="sr-only">Previous</span>
+                                      </a>
+                                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                     <span class="sr-only">Next</span>
+                                         </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 pl-xl-0 pl-lg-0 pl-md-0 border-left m-b-30">
+                        <div class="product-details">
+                            <div class="border-bottom pb-3 mb-3">
+                                <h2 class="mb-3">{{ member.name }}</h2>
+                                <div class="product-rating d-inline-block float-right">
+                                    <a href="{% url 'edit_member' member.pk %}"><i class="fa fa-edit mr-3 fa-2x"></i></a><i class="ml-3 fa fa-2x fa-building"></i>
+                                </div>
+                                <h3 class="mb-0 text-primary">{{ member.ministry }}</h3>
+                            </div>
+                            <div class="product-colors border-bottom">
+                                <h4>Saved Church</h4>
+                                <input type="radio" class="radio" id="radio-1" name="group" />
+                                <label for="radio-1"></label>
+                                <input type="radio" class="radio" id="radio-2" name="group" />
+                                <label for="radio-2"></label>
+                                <input type="radio" class="radio" id="radio-3" name="group" />
+                                <label for="radio-3"></label>
+                            </div>
+                            <div class="product-size border-bottom">
+                                <h4>Statuses</h4>
+                                <div class="btn-group" role="group" aria-label="First group">
+                                    <button type="button" class="btn btn-outline-light">
+                                        {% if member.pays_tithe %} Pays Tithe {% else %} No Tithe {% endif %}
+                                    </button>
+                                    <button type="button" class="btn btn-outline-light">
+                                        {% if member.new_believer_school %} New Believer {% else %} No New Believer {% endif %}
+                                    </button>
+                                    <button type="button" class="btn btn-outline-light">
+                                        {% if member.working %} Working {% else %} Not Working {% endif %}
+                                    </button>
+                                    <button type="button" class="btn btn-outline-light">
+                                        {% if member.schooling %} Schooling {% else %} Not Schooling {% endif %}
+                                    </button>
+                                </div>
+
+                            </div>
+                            <div class="product-description">
+                                <h4 class="mb-1">About</h4>
+                                <p>
+                                    {{ member.name }}'s shepherd is <b>{{ member.shepherd }}</b> and is in the <b>{{ member.ministry }}</b> ministry. {{ member.name }}
+                                    lives at <b>{{ member.location }}</b> and parent name are {% if member.fathers_name %} Mr. {{ member.fathers_name }} {% endif %}
+                                    {% if member.mothers_name %} and Mrs. {{ member.mothers_name }}{% endif %} and lives with <b> {{ member.guardians_name }} </b>. {{ member.name }} can be reached on <b>{{ member.telephone }}</b>
+                                </p>
+                                <a href="#" data-toggle="modal" data-target="#deleteModal" class="btn btn-{% if member.active %}danger{% else %}success{% endif %} btn-block btn-lg">{% if member.active %} Delete {% else %}Restore {% endif %} Member</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="deleteModallabel">{% if member.active %}Removing{% else %}Restoring{% endif %} Member from the system</h5>
+                  <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                  </button>
+                </div>
+                <div class="modal-body">Are you sure you want to {% if member.active %}delete {% else %}restore{% endif %} this member?</div>
+                <div class="modal-footer">
+                  <button class="btn btn-warning text-light" type="button" data-dismiss="modal">Cancel</button>
+                  <a class="btn btn-{% if member.active %}danger{% else %}success{% endif %}" href="{% if member.active %} {% url 'delete_member' member.pk %} {% else %} {% url 'restore_members' member.pk %} {% endif %}">Yes</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+{% endblock content %}
+
+{% block footer %}{% endblock footer %}

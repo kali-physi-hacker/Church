@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block internal_style %}
+    <style>
+        div.card{
+            border-right: 0.2rem solid #222;
+        }
+
+    .card.p-5{
+        border-right: 0;
+        border-bottom: 2px solid #f3b600;
+    }
+    </style>
+
+{% endblock internal_style %}
+
+{% block content %}
+    <div class="dashboard-wrapper">
+        <div class="container-fluid dashboard-content">
+            <div class="row">
+                <div class="col-xl-8 col-lg-8 col-md-11 col-sm-12 col-12 mx-auto">
+                    <div class="card p-5 shadow">
+                    <div class="card-header">
+                        <h3 class="h2">Select The Category</h3>
+                    </div>
+                    <div class="row mt-5">
+                        <div class="col-xs-12 col-lg-10 col-md-12 col-xl-6 mx-auto">
+                            <div class="card shadow">
+                                <div class="card-header">
+                                    <p class="h5">Ministries</p>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text">
+                                        Click to create a new ministry, edit or modify an existing ministry, view or list saved ministries in the system and delete existing ministries.
+                                        Members of a particular ministry can also be viewed, and modified.
+                                    </p>
+                                    <a href="{% url 'list_ministries' %}" class="btn btn-warning text-light shadow btn-sm">View List</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-lg-10 col-md-12 col-xl-6 mx-auto">
+                            <div class="card shadow">
+                                <div class="card-header">
+                                    <p class="h5">Shepherds</p>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text">
+                                        Click to add new shepherds, edit or modify an existing shepherd, view or list saved shepherds in the system and delete existing shepherds.
+                                        Members belonging to a particular shepherd can also be viewed and modified.
+                                    </p>
+                                    <a href="{% url 'list_shepherds' %}" class="btn btn-warning btn-sm shadow text-light">View List</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-lg-10 col-md-12 col-xl-6 mx-auto">
+                            <div class="card shadow">
+                                <div class="card-header">
+                                    <p class="h5">Members</p>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text">
+                                        Click to add new members, edit or modify an existing member, view or list saved members in the system and delete existing member.
+                                        Shepherds and Ministries of a particular member can also be accessed and modified from here.
+                                    </p>
+                                    <a href="{% url 'table_members' %}" class="btn btn-warning text-light btn-sm shadow">View List</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+
+
+{% endblock content %}

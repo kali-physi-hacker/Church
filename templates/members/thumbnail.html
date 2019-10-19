@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <div class="dashboard-wrapper">
+        <div class="container-fluid dashboard-content">
+            <div class="container-fluid">
+    <div class="row">
+    {% if messages %}
+            {% for message in messages %}
+                <div class="col-lg-12 mr-auto ml-auto alert bg-warning alert-dismissable pb-0 pt-0" role="alert">
+                    <button type="button" class="close p-2" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true" class="text-light font-weight-bold"><b>&times;</b></span>
+                    </button>
+                    <div class="row">
+                        <div class="mr-auto ml-auto">
+                        <p class="h5 mr-auto ml-auto p-2 text-light">
+                             <b>
+                                {% if message.tags ==  "alert-danger" %}
+                                    <i class="fa fa-exclamation-triangle mr-3 text-danger"></i> {{ message }}
+                                {% else %}
+                                    <i class="fa fa-check"></i> {{ message }}
+                                {% endif %}
+                            </b>
+                        </p>
+                    </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+        <div class="card p-3 w-100">
+            <p>
+                <a href="{% url 'table_members' %}">Table View<i class="ml-2 fa fa-table"></i></a>
+                <a href="{% url 'list_members' %}" class="ml-4">List View <i class="ml-2 fa fa-list"></i></a>
+            </p>
+        </div>
+        <div class="col-xl-9 col-lg-8 col-md-8 col-sm-12 col-12">
+            <div class="row">
+                {% for member in members %}
+                    <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
+                        <div class="product-thumbnail">
+                            <div class="product-img-head">
+                                <div class="product-img">
+                                    <img src="{{ member.picture.url }}" alt="" class="img-fluid" height="300px"></div>
+                                <div class="ribbons bg-warning"></div>
+                                <div class="ribbons-text p-0 text-warning"></div>
+                                <div class=""><a href="#" class="product-wishlist-btn"><i class="fas fa-heart"></i></a></div>
+                            </div>
+                            <div class="product-content">
+                                <div class="product-content-head">
+                                    <h3 class="product-title">{{ member.name }}</h3>
+                                    <div class="product-rating d-inline-block">
+                                        <i class="fa fa-fw fa-star"></i>
+                                        <i class="fa fa-fw fa-star"></i>
+                                        <i class="fa fa-fw fa-star"></i>
+                                        <i class="fa fa-fw fa-star"></i>
+                                        <i class="fa fa-fw fa-star"></i>
+                                    </div>
+                                    <div class="product-price text-secondary"><u>{{ member.ministry }}</u></div>
+                                </div>
+                                <div class="product-btn">
+                                    <a href="#" data-toggle="modal" data-target="#deleteModal" class="btn btn-danger">Delete Member</a>
+                                    <a href="{% url 'detail_member' member.pk %}" class="btn btn-outline-light">Details</a>
+                                    <a href="{% url 'edit_member' member.pk %}" class="btn btn-outline-light"><i class="fas fa-edit"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="deleteModallabel">Removing Member from the system</h5>
+                          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">Are you sure you want to delete this member?</div>
+                        <div class="modal-footer">
+                          <button class="btn btn-warning text-light" type="button" data-dismiss="modal">Cancel</button>
+                          <a class="btn btn-danger" href="{% url 'delete_member' member.pk %}">Yes</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+                </div>
+        </div>
+        <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 col-12">
+            <form action="{% url 'filter_members' %}" method="get">
+                <div class="product-sidebar">
+                <div class="product-sidebar-widget">
+                    <h4 class="mb-0">Member Filter</h4>
+                </div>
+                <div class="product-sidebar-widget">
+                    <h4 class="product-sidebar-widget-title">Statuses</h4>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="tithe" name="pays_tithe" {{ pays_tithe }}>
+                        <label class="custom-control-label" for="tithe">Pays Tithe</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="believer" name="new_believer_school" {{ new_believer_school }}>
+                        <label class="custom-control-label" for="believer">New Believer's School</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="work" name="working" {{ working }}>
+                        <label class="custom-control-label" for="work">Working</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="school" name="schooling" {{ schooling }}>
+                        <label class="custom-control-label" for="school">Schooling</label>
+                    </div>
+                </div>
+                <div class="product-sidebar-widget">
+                    <h4 class="product-sidebar-widget-title">Ministry</h4>
+                    {% for ministry in ministries %}
+                        <label class="custom-control custom-radio">
+                            <input type="radio" class="custom-control-input" id="{{ ministry }}-{{ ministry.pk }}" name="ministry" value="{{ ministry }}" {% if id_ministry %}checked{% endif %}>
+                            <label class="custom-control-label" for="{{ ministry }}-{{ ministry.pk }}">{{ ministry.name }}</label>
+                        </label>
+                    {% endfor %}
+
+                </div>
+                <div class="product-sidebar-widget">
+                    <h4 class="product-sidebar-widget-title">Shepherd</h4>
+                    {% for shepherd in shepherds %}
+                        <div class="custom-control custom-radio">
+                            <input type="radio" class="custom-control-input" id="{{ shepherd }}-{{ shepherd.pk }}" name="shepherd" value="{{ shepherd }}">
+                            <label class="custom-control-label" for="{{ shepherd }}-{{ shepherd.pk }}">{{ shepherd.name }}</label>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="product-sidebar-widget">
+                    <button type="submit" class="btn btn-outline-light">Filter Members</button>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+        </div>
+
+{% endblock content %}

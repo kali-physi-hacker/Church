@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <div class="dashboard-wrapper">
+        <div class="container-fluid dashboard-content">
+            <div class="col-xl-12 col-lg-10 col-md-11 col-sm-12 col-xl-7 mx-auto">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="col-lg-12 mr-auto ml-auto alert bg-warning alert-dismissable pb-0 pt-0" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true" class="text-danger"><b>&times;</b></span>
+                    </button>
+                    <div class="row">
+                        <div class="mr-auto ml-auto">
+                        <p class="h5 mr-auto ml-auto p-2 text-light">
+                             <b>
+                                {% if message.tags ==  "alert-danger" %}
+                                    <i class="fa fa-exclamation-triangle mr-3 text-danger"></i> {{ message }}
+                                {% else %}
+                                    <i class="fa fa-check"></i> {{ message }}
+                                {% endif %}
+                            </b>
+                        </p>
+                    </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+        <div class="card">
+            <h5 class="card-header h5">Add A New Shepherd </h5>
+            <div class="card-body">
+                <form action="{% url 'create_shepherd' %}" method="post" class="mb-5">
+                    {% csrf_token %}
+                    <div class="form-group mb-5">
+                        <label for="{{ form.name.id_for_label }}">Shepherd Name</label>
+                        <input type="text" class="form-control" id="{{ form.name.id_for_label }}" name="{{ form.name.name }}" autofocus required>
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ form.age.id_for_label }}">Shepherd Age</label>
+                        <input type="text" name="{{ form.age.name }}" id="{{ form.age.id_for_label }}" class="form-control">
+                    </div>
+
+                    <button class="btn btn-warning mt-5 text-light shadow btn-sm">Add Shepherd</button>
+                </form>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+
+{% endblock content %}

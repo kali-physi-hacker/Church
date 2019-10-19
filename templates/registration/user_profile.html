@@ -1,0 +1,222 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="dashboard-wrapper">
+        <div class="influence-profile">
+            <div class="container-fluid dashboard-content ">
+                <!-- ============================================================== -->
+                <!-- pageheader -->
+                <!-- ============================================================== -->
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="page-header">
+                            <h3 class="mb-2">Account Profile</h3>
+                            <div class="page-breadcrumb">
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Account</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">Profile</li>
+                                    </ol>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- end pageheader -->
+                <!-- ============================================================== -->
+                <!-- ============================================================== -->
+                <!-- content -->
+                <!-- ============================================================== -->
+                <div class="row">
+                    <!-- ============================================================== -->
+                    <!-- profile -->
+                    <!-- ============================================================== -->
+                    <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12 col-12">
+                        <!-- ============================================================== -->
+                        <!-- card profile -->
+                        <!-- ============================================================== -->
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="user-avatar text-center d-block">
+                                    <img src="{{ profile.picture.url }}" alt="User Avatar" class="rounded-circle user-avatar-xxl">
+                                </div>
+                                <div class="text-center">
+                                    <h2 class="font-24 mb-0">{{ profile.user.username }}</h2>
+                                    <p>{{ profile.title }}</p>
+                                </div>
+                            </div>
+                            <div class="card-body border-top">
+                                <h3 class="font-16">Contact Information</h3>
+                                <div class="">
+                                    <ul class="list-unstyled mb-0">
+                                    <li class="mb-2"><i class="fas fa-fw fa-envelope mr-2"></i>{{ profile.user.email }}</li>
+                                    <li class="mb-0"><i class="fas fa-fw fa-phone mr-2"></i>{{ profile.telephone }}</li>
+                                </ul>
+                                </div>
+                            </div>
+                            <div class="card-body border-top">
+                                <h3 class="font-16">Pastor's Rating</h3>
+                                <h1 class="mb-0">4.8</h1>
+                                <div class="rating-star">
+                                    <i class="fa fa-fw fa-star"></i>
+                                    <i class="fa fa-fw fa-star"></i>
+                                    <i class="fa fa-fw fa-star"></i>
+                                    <i class="fa fa-fw fa-star"></i>
+                                    <i class="fa fa-fw fa-star"></i>
+                                    <p class="d-inline-block text-dark">14 Reviews </p>
+                                </div>
+                            </div>
+                            <div class="card-body border-top">
+                                <h3 class="font-16">Social Channels</h3>
+                                <div class="">
+                                    <ul class="mb-0 list-unstyled">
+                                    <li class="mb-1"><a href="#"><i class="fab fa-fw fa-facebook-square mr-1 facebook-color"></i>fb.me/{{ profile.user }}</a></li>
+                                    <li class="mb-1"><a href="#"><i class="fab fa-fw fa-twitter-square mr-1 twitter-color"></i>twitter.com/{{ profile.user }}</a></li>
+                                    <li class="mb-1"><a href="#"><i class="fab fa-fw fa-instagram mr-1 instagram-color"></i>instagram.com/{{ profile.user }}</a></li>
+                                    <li class="mb-1"><a href="#"><i class="fab fa-fw fa-whatsapp mr-1 text-success"></i>{{ profile.whatsapp_line }}</a></li>
+                                </ul>
+                                </div>
+                            </div>
+                            <div class="card-body border-top">
+                                <h3 class="font-16">Category</h3>
+                                <div>
+                                    <a href="#" class="badge badge-light mr-1">Emmanuel Cathedral</a>
+                                    <a href="#" class="badge badge-light mr-1">Administrator</a>
+                                    <a href="#" class="badge badge-light mr-1">Saved Church</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- ============================================================== -->
+                        <!-- end card profile -->
+                        <!-- ============================================================== -->
+                    </div>
+                    <!-- ============================================================== -->
+                    <!-- end profile -->
+                    <!-- ============================================================== -->
+                    <!-- ============================================================== -->
+                    <!-- campaign data -->
+                    <!-- ============================================================== -->
+                    <div class="col-xl-9 col-lg-9 col-md-7 col-sm-12 col-12">
+                        <!-- ============================================================== -->
+                        <!-- campaign tab one -->
+                        <!-- ============================================================== -->
+                        <div class="influence-profile-content pills-regular">
+                            <ul class="nav nav-pills mb-3 nav-justified" id="pills-tab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="pills-campaign-tab" data-toggle="pill" href="#pills-campaign" role="tab" aria-controls="pills-campaign" aria-selected="true">Works</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="pills-msg-tab" data-toggle="pill" href="#pills-msg" role="tab" aria-controls="pills-msg" aria-selected="false">Send Messages</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="pills-tabContent">
+                                <div class="tab-pane fade show active" id="pills-campaign" role="tabpanel" aria-labelledby="pills-campaign-tab">
+                                    <div class="row">
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                            <div class="section-block">
+                                                <h3 class="section-title">Souls</h3>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                            <div class="card">
+                                                <h5 class="card-header">Members</h5>
+                                                {% if shepherd %}
+                                                    {% if members %}
+                                                        {% for member in members %}
+                                                            <div class="card-body border-top">
+                                                                <div class="review-block">
+                                                                    <p class="review-text font-italic m-0">
+                                                                        “{{ member.name }}'s shepherd is <b>{{ member.shepherd }}</b> and is in the <b>{{ member.ministry }}</b> ministry. {{ member.name }}
+                                                                        lives at <b>{{ member.location }}</b> and parent name are {% if member.fathers_name %} Mr. {{ member.fathers_name }} {% endif %}
+                                                                        {% if member.mothers_name %} and Mrs. {{ member.mothers_name }}{% endif %} and lives with <b> {{ member.guardians_name }}
+                                                                    </b>. {{ member.name }} can be reached on <b>{{ member.telephone }}</b>”
+                                                                    </p>
+                                                                    <div class="rating-star mb-4">
+                                                                        <i class="fa fa-fw fa-star"></i>
+                                                                        <i class="fa fa-fw fa-star"></i>
+                                                                        <i class="fa fa-fw fa-star"></i>
+                                                                        <i class="fa fa-fw fa-star"></i>
+                                                                        <i class="fa fa-fw fa-star"></i>
+                                                                    </div>
+                                                                    <span class="text-dark font-weight-bold">{{ member.name }} ({{ member.ministry }})</span><small class="text-mute"></small>
+                                                                </div>
+                                                            </div>
+                                                        {% endfor %}
+                                                    {% else %}
+                                                        <div class="card-body border-top">
+                                                            <div class="review-block">
+                                                                <p class="review-text font-italics m-0">
+                                                                    <p>You happen to have no member recorded in the system<br>If you think
+                                                                    there is a problem somewhere see the system Administrator or your pastor.<br>
+                                                                    Thank You.
+                                                                </p>
+                                                        </div>
+                                                    </div>
+                                                    {% endif %}
+                                                {% else %}
+                                                    <div class="card-body border-top">
+                                                        <div class="review-block">
+                                                            <p class="review-text font-italics m-0">
+                                                                <p>You happen not to be a shepherd in this church.<br>If you think there is a problem with identification see the system Administrator or your pastor.<br>
+                                                                Thank You.
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="tab-pane fade" id="pills-msg" role="tabpanel" aria-labelledby="pills-msg-tab">
+                                    <div class="card">
+                                        <h5 class="card-header">Send Messages To The Pastor</h5>
+                                        <div class="card-body">
+                                            <form>
+                                                <div class="row">
+                                                    <div class="offset-xl-3 col-xl-6 offset-lg-3 col-lg-3 col-md-12 col-sm-12 col-12 p-4">
+                                                        <div class="form-group">
+                                                            <label for="name">Your Name</label>
+                                                            <input type="text" class="form-control form-control-lg" id="name" placeholder="">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="email">Your Email</label>
+                                                            <input type="email" class="form-control form-control-lg" id="email" placeholder="">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="subject">Subject</label>
+                                                            <input type="text" class="form-control form-control-lg" id="subject" placeholder="">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="messages">Messgaes</label>
+                                                            <textarea class="form-control" id="messages" rows="3"></textarea>
+                                                        </div>
+                                                        <button type="submit" class="btn btn-primary float-right">Send Message</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- ============================================================== -->
+                        <!-- end campaign tab one -->
+                        <!-- ============================================================== -->
+                    </div>
+                    <!-- ============================================================== -->
+                    <!-- end campaign data -->
+                    <!-- ============================================================== -->
+                </div>
+            </div>
+        </div>
+        <!-- ============================================================== -->
+        <!-- end content -->
+
+
+
+
+{% endblock content %}

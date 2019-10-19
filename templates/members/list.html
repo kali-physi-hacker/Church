@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+
+{% block footer %}{% endblock footer %}
+
+
+{% block content %}
+
+    <div class="dashboard-wrapper">
+        <div class="container-fluid table">
+                <aside class="page-aside">
+                    <div class="aside-content">
+                        <div class="aside-header">
+                            <button class="navbar-toggle" data-target=".aside-nav" data-toggle="collapse" type="button"><span class="icon"><i class="fas fa-caret-down"></i></span></button><span class="title">Saved Church</span>
+                            <p class="description">Members list view </p>
+                        </div>
+                        <div class="aside-compose"><a class="btn btn-lg btn-secondary btn-block" href="{% url 'add_member' %}">Add Member</a></div>
+                        <div class="aside-nav collapse">
+                            <ul class="nav">
+                                <li class="{% if status %}active{% endif %}"><a href="{% url 'list_members' %}"><span class="icon"><i class="fas fa-fw fa-list"></i></span>All<span class="badge badge-primary float-right">{{ total }}</span></a></li>
+                                <li class="{% if tithe %}active{% endif %}"><a href="{% url 'get_members_by_statuses' 'tithe' %}"><span class="icon"><i class="fas fa-fw  fa-envelope"></i></span>Tithe Payers <span class="badge badge-warning float-right text-light">{{ total_tithe }}</span></a></li>
+                                <li class="{% if new_believers %}active{% endif %}"><a href="{% url 'get_members_by_statuses' 'new_believers' %}"><span class="icon"><i class="fas fa-fw fa-people-carry"></i></span>New Believers School<span class="badge badge-secondary float-right">{{ total_new_believers }}</span></a></li>
+                                <li class="{% if working %}active{% endif %}"><a href="{% url 'get_members_by_statuses' 'working' %}"><span class="icon"><i class="fas fa-fw fa-briefcase"></i></span>Working<span class="badge badge-primary float-right">{{ total_working }}</span></a></li>
+                                <li class="{% if schooling %}active{% endif %}"><a href="{% url 'get_members_by_statuses' 'schooling' %}"><span class="icon"><i class="mdi mdi-school"></i></span>Schooling<span class="badge badge-danger float-right">{{ total_schooling }}</a></li>
+                                <li class="{{ active }}"><a href="{% url 'list_deleted_members' %}"><span class="icon"><i class="fas fa-fw fa-trash"></i></span>Deleted Members</a></li>
+                            </ul><span class="title">Shepherds</span>
+                            <ul class="nav nav-pills nav-stacked">
+                                {% for shepherd in shepherds %}
+                                <li class="{% if shepherd_name %}active{% endif %}">
+                                    <a href="{% url 'get_members_by_shepherd' shepherd.name %}" id="{{ shepherd.pk }}">
+                                        <i class="m-r-10 mdi mdi-label text-warning"></i>{{ shepherd.name }}
+                                    </a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </aside>
+                <div class="main-content container-fluid p-0">
+                    <div class="email-inbox-header">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="email-title">
+                                    <span class="icon"><i class="fas fa-users"></i></span> Members <span class="new-messages">(list view)</span>
+                                    <a href="{% url 'table_members' %}" class="ml-3 h6"><i class="mr-1 fa fa-fw fa-table"></i>Table View</a>
+                                    <a href="{% url 'thumbnail_members' %}" class="ml-3 h6"><i class="mr-1 fas fa-fw fa-th"></i>Thumbnail View</a>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="email-search">
+                                    <form action="{% url 'search_members' %}" method="get">
+                                        <div class="input-group input-search">
+                                            <input class="form-control" type="text" placeholder="Search member..." name="q"><span class="input-group-btn">
+                                            <button class="btn btn-secondary" type="submit"><i class="fas fa-search"></i></button></span>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="email-filters">
+                        <div class="email-filters-left">
+                            <label class="custom-control custom-checkbox be-select-all">
+                                <input class="custom-control-input chk_all" type="checkbox" name="chk_all"><span class="custom-control-label"></span>
+                            </label>
+                            <div class="btn-group">
+                                <button class="btn btn-light dropdown-toggle" data-toggle="dropdown" type="button">
+                                    With selected <span class="caret"></span></button>
+                                <div class="dropdown-menu" role="menu">
+                                    <a class="dropdown-item" href="#">Delete</a>
+                                </div>
+                            </div>
+                            <div class="btn-group">
+                                {% comment 'Buttons will be added later'  %}
+                                <button class="btn btn-light" type="button">Archive</button>
+                                <button class="btn btn-light" type="button">Span</button>
+                                <button class="btn btn-light" type="button">Delete</button>
+                                {% endcomment %}
+                            </div>
+                            <div class="btn-group">
+                                <button class="btn btn-light dropdown-toggle" data-toggle="dropdown" type="button">Order by <span class="caret"></span></button>
+                                <div class="dropdown-menu dropdown-menu-right" role="menu">
+                                    <a class="dropdown-item" href="#">Date Created</a>
+                                    <a class="dropdown-item" href="#">Name</a>
+                                    <a class="dropdown-item" href="#">Tithe Paying</a>
+                                    <div class="dropdown-divider"></div><a class="dropdown-item" href="#">Age</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="email-filters-right"><span class="email-pagination-indicator">1-50 of {{ total }}</span>
+                            <div class="btn-group email-pagination-nav shadow">
+                                <button class="btn btn-light" type="button"><i class="fas fa-angle-left"></i></button>
+                                <button class="btn btn-light" type="button"><i class="fas fa-angle-right"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="email-list">
+                        {% for member in members %}
+                            <div class="email-list-item">
+                                <div class="email-list-actions">
+                                    <label class="custom-control custom-checkbox">
+                                        <input class="custom-control-input checkboxes" type="checkbox" value="1" id="one"><span class="custom-control-label"></span>
+                                    </label><a class="favorite active" href="#"><span><i class="fas fa-star text-dark"></i></span></a>
+                                </div>
+                                <div class="email-list-detail"><span class="date float-right"><span class="icon"><i class="fas fa-building text-warning"></i> </span>{{ member.ministry }}</span><span class="from">{{ member.name }}</span>
+                                    <a href="{% url 'detail_member' member.pk %}">
+                                        <p class="msg">
+                                            {{ member.name }}'s shepherd is <b>{{ member.shepherd }}</b> and is in the <b>{{ member.ministry }}</b> ministry. {{ member.name }}
+                                        lives at <b>{{ member.location }}</b> and parent name ...
+                                        </p>
+                                    </a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+
+{% endblock content %}
+
+{% block script %}
+
+    <script>
+        $(document).ready(function() {
+
+        // binding the check all box to onClick event
+        $(".chk_all").click(function() {
+
+            var checkAll = $(".chk_all").prop('checked');
+            if (checkAll) {
+                $(".checkboxes").prop("checked", true);
+            } else {
+                $(".checkboxes").prop("checked", false);
+            }
+
+        });
+
+        // if all checkboxes are selected, then checked the main checkbox class and vise versa
+        $(".checkboxes").click(function() {
+
+            if ($(".checkboxes").length == $(".subscheked:checked").length) {
+                $(".chk_all").attr("checked", "checked");
+            } else {
+                $(".chk_all").removeAttr("checked");
+            }
+
+        });
+
+        
+
+    });
+    </script>
+
+{% endblock script %}
