@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.http import JsonResponse
 
 from .models import Member, Ministry, Shepherd
 from users.models import UserProfile
@@ -42,6 +44,7 @@ def list_members(request):
         "total_new_believers": len(Member.objects.new_believer_school()),
         "total_schooling": len(Member.objects.schooling()),
         "total_working": len(Member.objects.working()),
+        "total_delete": len(members),
         "status": "all"
     }
     return render(request, template, context)
@@ -61,6 +64,7 @@ def list_deleted_members(request):
         "total_new_believers": len(Member.objects.new_believer_school()),
         "total_schooling": len(Member.objects.schooling()),
         "total_working": len(Member.objects.working()),
+        "total_delete": len(members),
         "status": "all",
         "active": "active"
     }
@@ -172,6 +176,7 @@ def get_members_by_statuses(request, status):
         "total_new_believers": len(Member.objects.new_believer_school()),
         "total_schooling": len(Member.objects.schooling()),
         "total_working": len(Member.objects.working()),
+        "total_delete": len(Member.objects.deleted()),
         status: status,
     }
     return render(request, template, context)
@@ -194,6 +199,7 @@ def get_members_by_shepherds(request, shepherd):
         "total_new_believers": len(Member.objects.new_believer_school()),
         "total_schooling": len(Member.objects.schooling()),
         "total_working": len(Member.objects.working()),
+        "total_delete": len(Member.objects.deleted()),
         "shepherd_name": shepherd
     }
 
@@ -346,3 +352,99 @@ def create_shepherd(request):
         else:
             messages.error(request, "Shepherd Creation Failed")
             return redirect('add_shepherd')
+
+
+# ================================================================================= #
+#                                   Api View Functions                              #
+# ================================================================================= #
+def api_get_members(request, user_id):
+    if user_id is not None:
+        try:
+            user = User.objects.get(id=user_id)
+        except:
+            user = None
+
+        if user is not None:
+            members = Member.objects.active()
+            shepherds = Shepherd.objects.all()
+            ministry = Ministry.objects.all()
+
+            data = {
+                "STATUS": "OK",
+                "members": members,
+                "shepherds": shepherds,
+                "ministry": ministry
+            }
+
+        else:
+            data = {"STATUS": "INVALID", "ERROR_TYPE": "AUTHENTICATION PROBLEM", "STATUS_CODE": -1}
+    else:
+        data = {"STATUS": "INVALID", "ERROR_TYPE": "USER NOT LOGGED IN", "STATUS_CODE": 0}
+
+    return JsonResponse(data, content_type="Application/json", safe=False)
+
+
+def api_create_member(request, user_id):
+    data = {}
+    if user_id is not None:
+        try:
+            user = User.objects.get(id=user_id)
+        except:
+            user = None
+        if user is not None:
+            if request.method == "POST":
+                form = MemberForm(request.POST, request.FILES or None)
+                if form.is_valid():
+                    member = form.save(commit=False)
+                    member.save()
+                    data = {"STATUS": "OK", "MEMBER_ID": member.pk}
+                    return JsonResponse(data, content_type="Application/json", safe=False)
+                else:
+                    data = {"STATUS": "INVALID"}
+        else:
+            data = {"STATUS": "INVALID", "ERROR_TYPE": "AUTHENTICATION PROBLEM", "STATUS_CODE": -1}
+    else:
+        data = {"STATUS": "INVALID", "ERROR_TYPE": "USER NOT LOGGED IN", "STATUS_CODE": 0}
+
+    return JsonResponse(data, content_type="Application/json", safe=False)
+
+
+def api_get_shepherds(request):
+    shepherds = Shepherd.objects.all()
+    data = {"shepherds": shepherds}
+    return JsonResponse(data, content_type="Application/json", safe=False)
+
+
+def api_create_shepherd(request):
+    if request.method == "POST":
+        form = ShepherdForm(request.POST, request.FILES or None)
+        if form.is_valid():
+            shepherd = form.save(commit=False)
+            shepherd.save()
+            data = {"STATUS": "OK", "SHEPHERD_ID": shepherd.pk}
+            return JsonResponse(data, content_type="Application/json", safe=False)
+        else:
+            data = {"STATUS": "INVALID"}
+            return JsonResponse(data, content_type="Application/json", safe=False)
+
+
+def api_get_ministry(request):
+    ministries = Ministry.objects.all()
+    data = {"ministries": ministries}
+    return JsonResponse(data, content_type="Application/json", safe=False)
+
+
+def api_create_ministry(request):
+    if request.method == "POST":
+        form = MinistryForm(request.POST, request.FILES or None)
+        if form.is_valid():
+            ministry = form.save(commit=False)
+            ministry.save()
+            data = {"STATUS": "OK", "MINISTRY_ID": ministry.pk}
+            return JsonResponse(data, content_type="Application/json", safe=False)
+        else:
+            data = {"STATUS": "INVALID"}
+            return JsonResponse(data, content_type="Application/json", safe=False)
+
+
+# def api_get_members_status(request, status):

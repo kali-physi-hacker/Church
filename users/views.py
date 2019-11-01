@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 
+from django.http import JsonResponse
+
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 
@@ -94,11 +96,48 @@ def user_profile(request):
     profile = UserProfile.objects.get(user=request.user)
     try:
         shepherd = Shepherd.objects.get(name=request.user.username)
-        members = shepherd.member_set.all()
-        import pdb; pdb.set_trace()
+        members = shepherd.member_set.active()
+        # import pdb; pdb.set_trace()
     except:
         shepherd = None
         members = None
     # import pdb; pdb.set_trace()
     context = {"profile": profile, "members": members, "shepherd": shepherd}
     return render(request, template, context)
+
+
+def login_api(request):
+    if request.method == "POST":
+        form = UserForm(request.POST or None)
+        if form.is_valid():
+            username = form.cleaned_data.get("username")
+            password = form.cleaned_data.get("password")
+            user = authenticate(username=username, password=password)
+
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    response = {"STATUS": "OK", "USER_ID": user.pk}
+                    return JsonResponse(response, content_type="Application/json", safe=False)
+                else:
+                    response = {"STATUS": "INACTIVE"}
+                    return JsonResponse(response, content_type="Application/json", safe=False)
+            else:
+                response = {"STATUS": "INVALID USER CREDENTIALS", "CODE": -1}
+                return JsonResponse(response, content_type="Application/json", safe=False)
+
+        else:
+            response = {"STATUS": "VALIDATION ERROR"}
+            return JsonResponse(response, content_type="Application/json", safe=False)
+
+
+def signup_api(request):
+    if request.method == "POST":
+        form = SignupForm(request.POST or None)
+        if form.is_valid():
+            form.save()
+            response = {"STATUS": "OK", "CODE": 0}
+            return JsonResponse(response, content_type="Application/json", safe=False)
+        else:
+            response = {"STATUS": "ERROR", "CODE": -1}
+            return JsonResponse(response, content_type="Application/json", safe=False)

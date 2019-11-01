@@ -16,12 +16,12 @@
                         <div class="aside-compose"><a class="btn btn-lg btn-secondary btn-block" href="{% url 'add_member' %}">Add Member</a></div>
                         <div class="aside-nav collapse">
                             <ul class="nav">
-                                <li class="{% if status %}active{% endif %}"><a href="{% url 'list_members' %}"><span class="icon"><i class="fas fa-fw fa-list"></i></span>All<span class="badge badge-primary float-right">{{ total }}</span></a></li>
+                                <li class="{% if status %}active{% endif %}"><a href="{% url 'list_members' %}"><span class="icon"><i class="fas fa-fw fa-list"></i></span>All<span class="badge badge-success float-right">{{ total }}</span></a></li>
                                 <li class="{% if tithe %}active{% endif %}"><a href="{% url 'get_members_by_statuses' 'tithe' %}"><span class="icon"><i class="fas fa-fw  fa-envelope"></i></span>Tithe Payers <span class="badge badge-warning float-right text-light">{{ total_tithe }}</span></a></li>
                                 <li class="{% if new_believers %}active{% endif %}"><a href="{% url 'get_members_by_statuses' 'new_believers' %}"><span class="icon"><i class="fas fa-fw fa-people-carry"></i></span>New Believers School<span class="badge badge-secondary float-right">{{ total_new_believers }}</span></a></li>
                                 <li class="{% if working %}active{% endif %}"><a href="{% url 'get_members_by_statuses' 'working' %}"><span class="icon"><i class="fas fa-fw fa-briefcase"></i></span>Working<span class="badge badge-primary float-right">{{ total_working }}</span></a></li>
                                 <li class="{% if schooling %}active{% endif %}"><a href="{% url 'get_members_by_statuses' 'schooling' %}"><span class="icon"><i class="mdi mdi-school"></i></span>Schooling<span class="badge badge-danger float-right">{{ total_schooling }}</a></li>
-                                <li class="{{ active }}"><a href="{% url 'list_deleted_members' %}"><span class="icon"><i class="fas fa-fw fa-trash"></i></span>Deleted Members</a></li>
+                                <li class="{{ active }}"><a href="{% url 'list_deleted_members' %}"><span class="icon"><i class="fas fa-fw fa-trash"></i></span>Deleted Members <span class="badge badge-info float-right">{{ total_delete }}</span></a></li>
                             </ul><span class="title">Shepherds</span>
                             <ul class="nav nav-pills nav-stacked">
                                 {% for shepherd in shepherds %}
