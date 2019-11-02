@@ -1,1 +1,1 @@
-web: gunicorn church:church
+web: gunicorn church.wsgi --log-file -
