@@ -428,10 +428,50 @@ def api_create_shepherd(request):
             return JsonResponse(data, content_type="Application/json", safe=False)
 
 
+def api_edit_shepherd(request, pk):
+    if request.method == "POST":
+        shepherd = get_object_or_404(Shepherd, pk=pk)
+        form = ShepherdForm(request.POST or None, instance=shepherd)
+        if form.is_valid():
+            form.save()
+            data = {"STATUS": "OK", "CODE": 0}
+        else:
+            data = {"STATUS": "INVALID", "CODE": -1}
+        return JsonResponse(data, content_type="Application/json", safe=False)
+
+
+def api_delete_shepherd(request, pk):
+    if request.method == "POST":
+        shepherd = get_object_or_404(Shepherd, pk=pk)
+        form = ShepherdForm(request.POST or None, instance=shepherd)
+        if form.is_valid():
+            form.delete()
+            data = {"STATUS": "OK", "CODE": 0}
+        else:
+            data = {"STATUS": "INVALID", "CODE": -1}
+        return JsonResponse(data, content_type="Application/json", safe=False)
+
+
 def api_get_ministry(request):
     ministries = Ministry.objects.all()
     data = {"ministries": ministries}
     return JsonResponse(data, content_type="Application/json", safe=False)
+
+
+def api_edit_ministry(request, pk):
+    if request.method == "POST":
+        ministry = get_object_or_404(Ministry, pk=pk)
+        form = MinistryForm(request.POST or None, instance=ministry)
+        if form.is_valid():
+            form.save()
+            data = {"STATUS": "OK", "CODE": 0}
+        else:
+            data = {"STATUS": "INVALID"}
+        return JsonResponse(data, content_type="Application/json", safe=Fale)
+
+
+# def api_delete_ministry(request, pk):
+
 
 
 def api_create_ministry(request):
@@ -447,4 +487,4 @@ def api_create_ministry(request):
             return JsonResponse(data, content_type="Application/json", safe=False)
 
 
-# def api_get_members_status(request, status):
+# def api_get_members_status(request, status)

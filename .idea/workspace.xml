@@ -2,20 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e2315a6f-ff95-45e0-b390-2545bc02d23f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/01366690-e722-45dc-8800-06c40bcd2e0b.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/01366690-e722-45dc-8800-06c40bcd2e0b.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Member/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Member/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/church/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/church/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/members/add.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/members/add.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/members/edit.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/members/edit.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/members/list.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/members/list.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/users/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/users/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/views.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -178,6 +168,11 @@
       <workItem from="1571815892504" duration="1444000" />
       <workItem from="1571854251568" duration="2374000" />
       <workItem from="1571923660630" duration="52000" />
+      <workItem from="1572946195357" duration="775000" />
+      <workItem from="1572947526896" duration="136000" />
+      <workItem from="1573123535623" duration="1234000" />
+      <workItem from="1574785700601" duration="1224000" />
+      <workItem from="1575047721467" duration="14000" />
     </task>
     <servers />
   </component>
